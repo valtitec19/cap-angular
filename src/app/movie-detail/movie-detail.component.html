@@ -1,0 +1,27 @@
+<div [formGroup]="formMovie" class="form-movie">
+  <h1>Agregar pelicula</h1>
+  <mat-form-field class="movie-input" appearance="fill">
+    <mat-label>Nombre</mat-label>
+    <input matInput placeholder="Ex. Avengers" formControlName="nombre">
+  </mat-form-field>
+  <mat-form-field class="movie-input" appearance="fill">
+    <mat-label>Director</mat-label>
+    <input matInput placeholder="Ex. Brother´s Russo" formControlName="director">
+  </mat-form-field>
+  <mat-form-field class="movie-input" appearance="fill">
+    <mat-label>Link de imagen</mat-label>
+    <input matInput placeholder="Ex. link :v" formControlName="imagen">
+  </mat-form-field>
+
+  <div>
+    <img class="img-avatar" [src]="movie?.imagen">
+  </div>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="formMovie.invalid"
+    (click)="save()">
+    Guardar
+  </button>
+</div>

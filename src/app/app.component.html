@@ -1,0 +1,10 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <span>Curso Angular</span>
+</mat-toolbar>
+<mat-progress-bar
+color="accent"
+  mode="indeterminate"
+  *ngIf="loading"
+  class="loading-bar"
+  ></mat-progress-bar>
+<router-outlet></router-outlet>
