@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    app: test-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/angular/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: angular
+            port:
+              number: 8080
+      - path: /api/hola/(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: hola
+            port:
+              number: 9101
+  ingressClassName: nginx

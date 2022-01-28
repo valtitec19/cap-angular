@@ -1,0 +1,153 @@
+---
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: angular
+  name: angular
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular
+  template:
+    metadata:
+      labels:
+        app: angular
+    spec:
+      containers:
+      - name: angular
+        image: valtierra19/cap-axity:angular
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        env:
+        - name: TZ
+          value: America/Mexico_City
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: angular
+  name: angular
+spec:
+  #type: LoadBalancer
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: angular
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: angular
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: angular
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: 200Mi
+---
+
+---
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: holamundo
+  name: holamundo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: holamundo
+  template:
+    metadata:
+      labels:
+        app: holamundo
+    spec:
+      containers:
+      - name: holamundo
+        image: valtierra19/cap-axity:holamundo
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        env:
+        - name: TZ
+          value: America/Mexico_City
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        ports:
+        - containerPort: 9101
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: holamundo
+  name: holamundo
+spec:
+  #type: LoadBalancer
+  ports:
+  - port: 9101
+    protocol: TCP
+    targetPort: 9101
+  selector:
+    app: holamundo
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: holamundo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: holamundo
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageValue: 200Mi
+---
